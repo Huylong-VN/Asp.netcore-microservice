@@ -1,13 +1,7 @@
 ﻿using Contracts.Domains;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contracts.Common.Interfaces
 {
@@ -22,7 +16,7 @@ namespace Contracts.Common.Interfaces
         Task<T?> GetByIdAsync(K id);
         Task<T?> GetByIdAsync(K id,params Expression<Func<T, object>>[] includeProperties);
     }
-    public interface IRepositoryBase<T, K, TContext>: IRepositoryQueryBase<T, K, TContext>
+    public interface IRepositoryBaseAsync<T, K, TContext>: IRepositoryQueryBase<T, K, TContext>
         where T : EntityBase<K>
         where TContext : DbContext
     {

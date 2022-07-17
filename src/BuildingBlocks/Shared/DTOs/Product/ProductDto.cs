@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Shared.DTOs.Product
 {
     public class ProductDto

@@ -39,6 +39,11 @@ services:
     build:
       context: .
       dockerfile: services/Product.API/Dockerfile
+  customer.api:
+    image: ${DOCKER_REGISTRY-}customer-api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: services/Customer.API/Dockerfile
 
 #network section
 networks:

@@ -4,7 +4,7 @@ using Product.API.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
-Log.Information("Start Product API UP");
+Log.Information($"Start {builder.Environment.ApplicationName} up");
 
 try
 {
@@ -26,15 +26,12 @@ try
 catch(Exception ex)
 {
     string type = ex.GetType().Name;
-    if (type.Equals("StopTheHostException", StringComparison.Ordinal))
-    {
-        throw;
-    }
+    if (type.Equals("StopTheHostException", StringComparison.Ordinal)) throw;
 
     Log.Fatal(ex, $"Unhandled exception: {ex.Message}");
 }
 finally
 {
-    Log.Information("Shut down Product API complete");
+    Log.Information($"Shut down {builder.Environment.ApplicationName} complete");
     Log.CloseAndFlush();
 }

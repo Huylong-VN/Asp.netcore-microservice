@@ -16,7 +16,7 @@ namespace Product.API.Extentions
                 try
                 {
                     logger.LogInformation("Migrating mysql database");
-                    context.Database.Migrate();
+                    context!.Database.Migrate();
                     logger.LogInformation("Migrated mysql database.");
                     InvokeSeeder(seeder,context,service);
                 }

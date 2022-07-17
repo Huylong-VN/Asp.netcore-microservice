@@ -9,7 +9,7 @@ namespace Product.API.Persistence
         public ProductContext(DbContextOptions<ProductContext> options) : base(options)
         {
         }
-        public DbSet<CatalogProduct> Products { set; get; }
+        public DbSet<CatalogProduct> Products { set; get; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

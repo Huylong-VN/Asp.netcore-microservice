@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Product.API.Repositories.Interfaces;
+using Shared.DTOs.Customer;
 using Shared.DTOs.Product;
 
 namespace Product.API.Controllers
@@ -22,7 +23,7 @@ namespace Product.API.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await _repository.GetProducts();
-            var result = _mapper.Map<IEnumerable<ProductDto>>(products);
+            var result = _mapper.Map<IEnumerable<CustomerDto>>(products);
             return Ok(result);
         }
 
@@ -30,7 +31,7 @@ namespace Product.API.Controllers
         public async Task<IActionResult> GetProducts(long Id)
         {
             var products = await _repository.GetByIdAsync(Id);
-            var result = _mapper.Map<IEnumerable<ProductDto>>(products);
+            var result = _mapper.Map<IEnumerable<CustomerDto>>(products);
             return Ok(result);
         }
 

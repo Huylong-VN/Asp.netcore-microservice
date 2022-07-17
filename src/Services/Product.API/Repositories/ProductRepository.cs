@@ -1,5 +1,5 @@
 ﻿using Contracts.Common.Interfaces;
-using Contracts.Infrastructure.Common;
+using Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Product.API.Entities;
 using Product.API.Persistence;
@@ -13,29 +13,24 @@ namespace Product.API.Repositories
         {
         }
 
-        public Task CreateProduct(CatalogProduct product)
-        {
-            throw new NotImplementedException();
-        }
+        public Task CreateProduct(CatalogProduct product) =>
+            CreateAsync(product);
 
-        public Task DeleteProduct(long id)
+        public async Task DeleteProduct(long id)
         {
-            throw new NotImplementedException();
+            var product = await GetProduct(id);
+            if(product != null) await DeleteAsync(product);
         }
 
         public async Task<IEnumerable<CatalogProduct>> GetProducts() => await FindAll().ToListAsync();
 
         public Task<CatalogProduct?> GetProduct(long Id) => GetByIdAsync(Id);
 
-        public Task<CatalogProduct> GetProductByNo(string productNo)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<CatalogProduct?> GetProductByNo(string productNo) =>
+            await FindByCondition(x => x!.No!.Equals(productNo!)).SingleOrDefaultAsync()!;
 
-        public Task UpdateProduct(CatalogProduct product)
-        {
-            throw new NotImplementedException();
-        }
+        public Task UpdateProduct(CatalogProduct product) => 
+            UpdateAsync(product);
 
     }
 }

@@ -1,18 +1,20 @@
 version: '3.8'
 
 services:
+  #database section
+  
   #orderdb: sql server
   orderdb:
     container_name: orderdb
-    environment: 
+    environment:
       SA_PASSWORD: "Passw0rd!"
-      ACCEPT_EULA: 'Y'
+      ACCEPT_EULA: "Y"
     restart: always
     volumes:
       - sqlserver_data:/var/lib/sqlserver/data
     ports:
       - "1435:1433"
-
+        
   #productdb: mysql
   productdb:
     container_name: productdb
@@ -23,38 +25,38 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-
+  
   #customerdb: postgres
   customerdb:
     container_name: customerdb
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin1234
-      - POSTGRES_DB=DiscountDb
+      - POSTGRES_DB=CustomerDb
     restart: always
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      
-  #basketdb
+    
+  #basketdb: redis
   basketdb:
     container_name: basketdb
     restart: always
     ports:
       - "6379:6379"
-    
+  
   #inventorydb: mongo
   inventorydb:
     container_name: inventorydb
     restart: always
-    ports: 
+    ports:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-    
+  
   #infrastructure section
-
+  
   rabbitmq:
     container_name: rabbitmq
     restart: always
@@ -65,14 +67,14 @@ services:
   pgadmin:
     container_name: pgadmin
     environment:
-    - PGADMIN_DEFAULT_EMAIL=admin@huy_microservice.com
-    - PGADMIN_DEFAULT_PASSWORD=admin1234
+      - PGADMIN_DEFAULT_EMAIL=admin@tedu.com.vn
+      - PGADMIN_DEFAULT_PASSWORD=admin1234
     restart: always
     ports:
       - "5050:80"
     volumes:
       - pgadmin_data:/root/.pgadmin
-      
+    
   portainer:
     container_name: portainer
     restart: always
@@ -82,7 +84,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
- 
+  
   elasticsearch:
     container_name: elasticsearch
     environment:
@@ -104,7 +106,6 @@ services:
     ports:
       - "5601:5601"
       
-      
   #microservices api sections
   product.api:
     container_name: product.api
@@ -116,4 +117,15 @@ services:
       - productdb
     ports:
       - "6002:80"
+    restart: always
+  customer.api:
+    container_name: customer.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - "ConnectionStrings:DefaultConnectionString=Server=customerdb;Port=5432;Database=CustomerDb;User Id=admin;Password=admin1234"
+    depends_on: 
+      - customerdb
+    ports:
+      - "6003:80"
     restart: always
